@@ -72,7 +72,88 @@
 
 //
 // =============================================================================
-// YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+vector<string> tasks;
+
+void addTask() {
+    cin.ignore();
+    string task;
+    cout << "Enter task: ";
+    getline(cin, task);
+    tasks.push_back(task);
+    cout << "Task added: \"" << task << "\"" << endl;
+}
+
+void viewTasks() {
+    if (tasks.empty()) {
+        cout << "Your task list is empty." << endl;
+    } else {
+        cout << "Your Tasks:" << endl;
+        for (int i = 0; i < tasks.size(); i++) {
+            cout << (i + 1) << ". " << tasks[i] << endl;
+        }
+    }
+}
+
+void deleteTask() {
+    viewTasks();
+    if (tasks.empty()) {
+        return;
+    }
+
+    int index;
+    cout << "Enter task number to delete: ";
+    cin >> index;
+
+    if (index < 1 || index > (int)tasks.size()) {
+        cout << "Error: Invalid task number." << endl;
+        return;
+    }
+
+    string removed = tasks[index - 1];
+    tasks.erase(tasks.begin() + (index - 1));
+    cout << "Task \"" << removed << "\" has been removed." << endl;
+}
+
+void printMenu() {
+    cout << "================================" << endl;
+    cout << "        TO-DO LIST MENU" << endl;
+    cout << "================================" << endl;
+    cout << "1. Add task" << endl;
+    cout << "2. View tasks" << endl;
+    cout << "3. Delete task" << endl;
+    cout << "4. Quit" << endl;
+}
+
+int main() {
+    while (true) {
+        printMenu();
+        int choice;
+        cout << "Enter your choice (1-4): ";
+        cin >> choice;
+
+        if (choice == 1) {
+            addTask();
+        } else if (choice == 2) {
+            viewTasks();
+        } else if (choice == 3) {
+            deleteTask();
+        } else if (choice == 4) {
+            cout << "Goodbye!" << endl;
+            break;
+        } else {
+            cout << "Error: Invalid choice. Please enter 1-4." << endl;
+        }
+
+        cout << endl;
+    }
+
+    return 0;
+}
 // =============================================================================
 
 #include <iostream>
