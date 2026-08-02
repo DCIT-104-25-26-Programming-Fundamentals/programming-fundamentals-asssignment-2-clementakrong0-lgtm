@@ -74,7 +74,136 @@
 
 //
 // =============================================================================
-// YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
+#include <iostream>
+#include <vector>
+#include <string>
+#include <iomanip>
+using namespace std;
+
+struct Student {
+    string name;
+    int id;
+    vector<double> scores;
+};
+
+vector<Student> students;
+
+double calculateAverage(vector<double> scores) {
+    double total = 0;
+    for (double s : scores) {
+        total += s;
+    }
+    return total / scores.size();
+}
+
+void addStudent() {
+    Student s;
+    cin.ignore();
+    cout << "Student name: ";
+    getline(cin, s.name);
+    cout << "Student ID: ";
+    cin >> s.id;
+
+    int numScores;
+    cout << "How many scores? ";
+    cin >> numScores;
+
+    for (int i = 1; i <= numScores; i++) {
+        double score;
+        cout << "Enter score " << i << ": ";
+        cin >> score;
+        s.scores.push_back(score);
+    }
+
+    students.push_back(s);
+    cout << "Student \"" << s.name << "\" added successfully." << endl;
+}
+
+void displayStudents() {
+    if (students.empty()) {
+        cout << "No students have been added yet." << endl;
+        return;
+    }
+
+    cout << left << setw(15) << "Name" << setw(12) << "ID" << setw(20) << "Scores" << setw(10) << "Average" << endl;
+    cout << "----------------------------------------------------------" << endl;
+
+    for (Student s : students) {
+        string scoresStr = "";
+        for (size_t i = 0; i < s.scores.size(); i++) {
+            scoresStr += to_string((int)s.scores[i]);
+            if (i != s.scores.size() - 1) {
+                scoresStr += ", ";
+            }
+        }
+
+        double avg = calculateAverage(s.scores);
+
+        cout << left << setw(15) << s.name << setw(12) << s.id << setw(20) << scoresStr;
+        cout << fixed << setprecision(2) << avg << endl;
+    }
+}
+
+void findAverageById() {
+    int id;
+    cout << "Enter student ID: ";
+    cin >> id;
+
+    for (Student s : students) {
+        if (s.id == id) {
+            double avg = calculateAverage(s.scores);
+            cout << fixed << setprecision(2);
+            cout << s.name << "'s average score: " << avg << endl;
+            return;
+        }
+    }
+
+    cout << "Error: Student ID not found." << endl;
+}
+
+void printMenu() {
+    cout << "=================================" << endl;
+    cout << "   STUDENT RECORD SYSTEM MENU" << endl;
+    cout << "=================================" << endl;
+    cout << "1. Add student" << endl;
+    cout << "2. Display all students" << endl;
+    cout << "3. Calculate average score" << endl;
+    cout << "4. Quit" << endl;
+}
+
+int main() {
+    while (true) {
+        printMenu();
+        int choice;
+        cout << "Enter your choice (1-4): ";
+        cin >> choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Error: Invalid choice. Please enter 1-4." << endl;
+            cout << endl;
+            continue;
+        }
+
+        if (choice == 1) {
+            addStudent();
+        } else if (choice == 2) {
+            displayStudents();
+        } else if (choice == 3) {
+            findAverageById();
+        } else if (choice == 4) {
+            cout << "Goodbye!" << endl;
+            break;
+        } else {
+            cout << "Error: Invalid choice. Please enter 1-4." << endl;
+        }
+
+        cout << endl;
+    }
+
+    return 0;
+}
 // =============================================================================
 
 #include <iostream>
